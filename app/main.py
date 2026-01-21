@@ -8,15 +8,17 @@ class Person:
 
 
 def create_person_list(people: list) -> list:
-    person_instanced_list = [Person(person["name"], person["age"])
+    person_instances_list = [Person(person["name"], person["age"])
                              for person in people]
 
-    for instanced_person in person_instanced_list:
-        for person in people:
-            if instanced_person.name == person["name"]:
-                if person.get("wife") is not None:
-                    instanced_person.wife = Person.people[person["wife"]]
-                elif person.get("husband") is not None:
-                    instanced_person.husband = Person.people[person["husband"]]
+    for person in people:
+        current_person = Person.people[person["name"]]
+        partner_name = person.get("wife") or person.get("husband")
+        if partner_name and person.get("wife"):
+            partner_instance = Person.people[partner_name]
+            current_person.wife = partner_instance
+        elif partner_name and person.get("husband"):
+            partner_instance = Person.people[partner_name]
+            current_person.husband = partner_instance
 
-    return person_instanced_list
+    return person_instances_list
