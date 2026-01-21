@@ -8,19 +8,15 @@ class Person:
 
 
 def create_person_list(people: list) -> list:
-    person_istances_list = []
-    for person in people:
-        one_person = Person(person["name"], person["age"])
-        if "wife" in person and person["wife"] is not None:
-            one_person.wife = person["wife"]
-        elif "husband" in person and person["husband"] is not None:
-            one_person.husband = person["husband"]
-        person_istances_list.append(one_person)
+    person_instanced_list = [Person(person["name"], person["age"])
+                             for person in people]
 
-    for istanced_person in person_istances_list:
-        if hasattr(istanced_person, "wife"):
-            istanced_person.wife = Person.people[istanced_person.wife]
-        elif hasattr(istanced_person, "husband"):
-            istanced_person.husband = Person.people[istanced_person.husband]
+    for instanced_person in person_instanced_list:
+        for person in people:
+            if instanced_person.name == person["name"]:
+                if person.get("wife") is not None:
+                    instanced_person.wife = Person.people[person["wife"]]
+                elif person.get("husband") is not None:
+                    instanced_person.husband = Person.people[person["husband"]]
 
-    return person_istances_list
+    return person_instanced_list
